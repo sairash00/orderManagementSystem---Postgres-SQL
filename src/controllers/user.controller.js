@@ -154,7 +154,7 @@ export const getUserId = async(req,res) => {
         message: "Username is required"
       })
     }
-
+ 
     const result = await userService.getUserId(username);
 
     return res.status(200).json({
