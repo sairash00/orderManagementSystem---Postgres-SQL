@@ -106,13 +106,14 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    const result = await productService.updateProduct(id, {
+    const result = await productService.updateProduct(
+      id,
       name,
       price,
       category,
       stock,
       barcode,
-    });
+    );
 
     return res.status(200).json({
       success: true,
