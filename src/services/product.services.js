@@ -69,7 +69,7 @@ export const getAllProducts = async() => {
     return products.rows;
 }
 
-export const updateProduct = async(id, name, price, category, stock, barcode) => {
+export const updateName = async(id, name) => {
     if(!id){
         throwError("Product ID is required", 400);
     }
@@ -78,5 +78,77 @@ export const updateProduct = async(id, name, price, category, stock, barcode) =>
     if(existingProduct.rows.length === 0){
         throwError("Product not found", 404);
     }
+
+    const updatedProduct = await pool.query('update products set name = $1 where id = $2 returning *', [name, id]);
+    return updatedProduct.rows[0];
+};
+
+export const updatePrice = async(id, price) => {
+    if(!id){
+        throwError("Product ID is required", 400);
+    }
     
-}
+    const existingProduct = await pool.query('select * from products where id = $1 limit 1', [id]);
+    if(existingProduct.rows.length === 0){
+        throwError("Product not found", 404);
+    }
+
+    const updatedProduct = await pool.query('update products set price = $1 where id = $2 returning *', [price, id]);
+    return updatedProduct.rows[0];
+};
+
+export const updateCategory = async(id, category) => {
+    if(!id){
+        throwError("Product ID is required", 400);
+    }
+    
+    const existingProduct = await pool.query('select * from products where id = $1 limit 1', [id]);
+    if(existingProduct.rows.length === 0){
+        throwError("Product not found", 404);
+    }
+
+    const updatedProduct = await pool.query('update products set category = $1 where id = $2 returning *', [category, id]);
+    return updatedProduct.rows[0];
+};
+
+export const updateStock = async(id, stock) => {
+    if(!id){
+        throwError("Product ID is required", 400);
+    }
+    
+    const existingProduct = await pool.query('select * from products where id = $1 limit 1', [id]);
+    if(existingProduct.rows.length === 0){
+        throwError("Product not found", 404);
+    }
+
+    const updatedProduct = await pool.query('update products set stock = $1 where id = $2 returning *', [stock, id]);
+    return updatedProduct.rows[0];
+};
+
+export const updateBarcode = async(id, barcode) => {
+    if(!id){
+        throwError("Product ID is required", 400);
+    }
+    
+    const existingProduct = await pool.query('select * from products where id = $1 limit 1', [id]);
+    if(existingProduct.rows.length === 0){
+        throwError("Product not found", 404);
+    }
+
+    const updatedProduct = await pool.query('update products set barcode = $1 where id = $2 returning *', [barcode, id]);
+    return updatedProduct.rows[0];
+};
+
+export const deleteProduct = async(id) => {
+    if(!id){
+        throwError("Product ID is required", 400);
+    }
+    
+    const existingProduct = await pool.query('select * from products where id = $1 limit 1', [id]);
+    if(existingProduct.rows.length === 0){
+        throwError("Product not found", 404);
+    }
+
+    await pool.query('delete from products where id = $1', [id]);
+    return { message: "Product deleted successfully" };
+};          
