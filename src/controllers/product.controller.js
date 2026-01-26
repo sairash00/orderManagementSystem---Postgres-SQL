@@ -94,37 +94,6 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-export const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, price, category, stock, barcode } = req.body;
-
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Product ID is required",
-      });
-    }
-
-    const result = await productService.updateProduct(
-      id,
-      name,
-      price,
-      category,
-      stock,
-      barcode,
-    );
-
-    return res.status(200).json({
-      success: true,
-      message: "Product updated successfully",
-      data: result,
-    });
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -141,6 +110,126 @@ export const deleteProduct = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Product deleted successfully",
+      data: result,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const updateName = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Product name is required",
+      });
+    }
+
+    const result = await productService.updateName(id, name);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product name updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const updatePrice = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { price } = req.body;     
+
+    if (!price) {
+      return res.status(400).json({
+        success: false,
+        message: "Product price is required",
+      });
+    }
+
+    const result = await productService.updatePrice(id, price);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product price updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const updateStock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { stock } = req.body;
+
+    if (stock === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "Product stock is required",
+      });
+    }
+
+    const result = await productService.updateStock(id, stock);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product stock updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { category } = req.body;
+
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Product category is required",
+      });
+    }
+
+    const result = await productService.updateCategory(id, category);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product category updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const updateBarcode = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { barcode } = req.body;
+
+    if (!barcode) {
+      return res.status(400).json({
+        success: false,
+        message: "Product barcode is required",
+      });
+    }
+
+    const result = await productService.updateBarcode(id, barcode);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product barcode updated successfully",
       data: result,
     });
   } catch (error) {
