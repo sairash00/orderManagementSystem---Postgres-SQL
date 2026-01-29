@@ -69,60 +69,7 @@ export const getOrdersByUserId = async(req, res) => {
     }
 }
 
-export const updateOrderStatus = async(req, res) => {
-    try {
-        const {id} = req.params;
-        const {status} = req.body;
 
-        if(!id){
-            return res.status(400).json({
-                success: false,
-                message: "Order ID is required",
-            });
-        }
-
-        if(!status){
-            return res.status(400).json({
-                success: false,
-                message: "Order status is required",
-            });
-        }
-
-        const updatedOrder = await orderService.updateOrderStatus(id, status);
-
-        return res.status(200).json({
-            success: true,
-            message: "Order status updated successfully",
-            data: updatedOrder
-        })
-        
-    } catch (error) {
-        handleError(res, error);
-    }
-}   
-
-export const deleteOrder = async(req, res) => {
-    try {
-        const {id} = req.params;
-
-        if(!id){
-            return res.status(400).json({
-                success: false,
-                message: "Order ID is required",
-            });
-        }
-
-        await orderService.deleteOrder(id);
-
-        return res.status(200).json({
-            success: true,
-            message: "Order deleted successfully",
-        })
-        
-    } catch (error) {
-        handleError(res, error);
-    }
-}       
 
 export const getAllOrders = async(req, res) => {
     try {
@@ -139,22 +86,23 @@ export const getAllOrders = async(req, res) => {
     }
 };
 
-export const getOrdersByStatus = async(req, res) => {
-    try {
-        const {status} = req.params;
 
-        if(!status){
+export const getOrderByDate = async(req, res) => {
+    try {
+        const {date} = req.params;
+
+        if(!date){
             return res.status(400).json({
                 success: false,
-                message: "Order status is required",
+                message: "Date is required",
             });
         }
 
-        const orders = await orderService.getOrdersByStatus(status);
+        const orders = await orderService.getOrderByDate(date);
 
         return res.status(200).json({
             success: true,
-            message: `Orders with status ${status} fetched successfully`,
+            message: "Orders fetched successfully",
             data: orders
         })
         
@@ -163,25 +111,27 @@ export const getOrdersByStatus = async(req, res) => {
     }
 }
 
-export const cancelOrder = async(req, res) => {
-    try {
-        const {id} = req.params;
+// NOTE: this feature is optional 
 
-        if(!id){
+export const getOrderByEmployeeId = async(req,res) => {
+    try {
+        const {employeeId} = req.params;
+
+        if(!employeeId){
             return res.status(400).json({
                 success: false,
-                message: "Order ID is required",
+                message: "Employee ID is required",
             });
         }
 
-        const canceledOrder = await orderService.cancelOrder(id);
+        const orders = await orderService.getOrderByEmployeeId(employeeId);
 
         return res.status(200).json({
             success: true,
-            message: "Order canceled successfully",
-            data: canceledOrder
+            message: "Orders fetched successfully",
+            data: orders
         })
-        
+
     } catch (error) {
         handleError(res, error);
     }
