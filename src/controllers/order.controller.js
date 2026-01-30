@@ -3,9 +3,9 @@ import { handleError } from '../utils/errorhandler.js'
 
 export const createOrder = async( req, res) => {
     try {
-        const {userId, items} = req.body;
+        const {userId, paymentMethod, items} = req.body;
 
-        if(!userId || !items || !Array.isArray(items) || items.length === 0){
+        if( !paymentMethod || !items || !Array.isArray(items) || items.length === 0){
             return res.status(400).json({
                 success: false,
                 message: "Invalid order data",
