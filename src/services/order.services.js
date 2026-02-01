@@ -89,3 +89,64 @@ export const createOrder = async ({ id, paymentMethod, items }) => {
     client.release();
   }
 };
+
+export const getOrderById = async (id) => {
+  if (!id) {
+    throwError("Order ID is required", 400);
+  }
+  
+  const result = await pool.query(
+    'select * from orders left join users on orders.user_id = users.id where orders.id = $1',[id]
+  );
+
+  if (result.rows.length === 0) {
+    throwError("Order not found", 404);
+  }
+
+  return result.rows[0];
+}
+
+export const getAllOrders = async () => {
+  const result = await pool.query(
+    'select * from orders left join users on orders.user_id = users.id'
+  )
+
+  if (result.rows.length === 0) {
+    throwError("No orders found", 404);
+  }
+
+  return result.rows;
+}
+
+export const getOrderByUserId = async(userId) => {
+  if (!userId) {
+    throwError("User ID is required", 400);
+  }
+
+  const result = await pool.query(
+     'select * from orders left join users on orders.user_id = users.id where users.id = $1',[userId]);
+
+  if (result.rows.length === 0) {
+    throwError("No orders found for this user", 404);
+  }
+
+  return result.rows;
+  
+}
+
+export const getOrderByDate = async (date) => {
+  if (!date) {
+    throwError("Date is required", 400);
+  }
+  
+  const result = await pool.query(
+    'select * from orders left join users on orders.user_id = users.id where created_at::date = $1',[date]
+  );
+  
+  if (result.rows.length === 0) {
+    throwError("No orders found for this date", 404);
+  }
+  return result.rows;
+}
+
+
